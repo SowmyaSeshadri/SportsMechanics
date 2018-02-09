@@ -27,11 +27,19 @@ function updateMainVideo(response) {
     var videoDate = document.getElementById("main-video-date");
 
     var videoArray = (JSON.parse(response));
-    console.log(videoArray);
     videoElement.src = videoArray[0].url;
     videoTitle.innerHTML = videoArray[0].title;
     videoDate.innerHTML = videoArray[0].date;
+
+    for (var i = 0; i <6; i++) {
+
+        document.getElementById('video-item-'+(i+1)).src = videoArray[i].url;
+        document.getElementById('video-title-'+(i+1)).innerHTML = videoArray[i].title;
+        document.getElementById('video-length-'+(i+1)).innerHTML = videoArray[i].length;
+        document.getElementById('video-date-'+(i+1)).innerHTML = videoArray[i].date;
+    }
 }
+
 
 //Play and pause function
 function togglePlayPause() {
