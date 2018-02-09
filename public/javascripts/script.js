@@ -1,5 +1,5 @@
 var video = document.getElementById("video-main");
-var currentVideo=1;
+var currentVideoId=1;
 video.addEventListener("timeupdate", updateProgress, false);
 var videoElement = document.getElementById("video-main");
 var videoTitle = document.getElementById("main-video-title");
@@ -10,8 +10,24 @@ var videoArray;
 
 window.onload = function() {
     xmlrequest('GET',"videos",null,updateMainVideo);
+    init();
     //Control buttons
 
+}
+
+
+function init() {
+    document.getElementById('outer').addEventListener("click",function(event){
+        var subBlock = event.target;
+        var id = event.target.id.substring(event.target.id.length-1,);
+        changeMainVideo(id);
+    });
+    document.getElementById('main-video-forward-button').addEventListener("click",function(event){
+        changeMainVideo(currentVideoId+1);
+    });
+    document.getElementById('main-video-backward-button').addEventListener("click",function(event){
+        changeMainVideo(currentVideoId-1);
+    });
 }
 
 //Control buttons
@@ -24,9 +40,9 @@ $(document).ready(function() {
   });
 });
 
-document.getElementById('outer').addEventListener("click",function(){
-    changeMainVideo();
-})
+
+
+
 
 
 function xmlrequest(type, url, content, callback) {
@@ -44,25 +60,40 @@ function xmlrequest(type, url, content, callback) {
     request.send(content);
 }
 
-function changeMainVideo() {
-    var subBlock = event.target;
-    var id = event.target.id.substring(event.target.id.length-1,);
+function changeMainVideo(id) {
+    currentVideoId=id;
+    var forwardBUtton = document.getElementById('main-video-forward-button');
+    var backwardButton = document.getElementById('main-video-backward-button');
+    console.log(id);
+    if(id<=0) {
+        backwardButton.classList.add('visibility-hidden');
+    }
+    else {
+        console.log("hello");
+        backwardButton.classList.remove('visibility-hidden');
+    }
+
+
+    if(id>=6) {
+        forwardBUtton.classList.add('visibility-hidden');
+    }
+    else {
+        forwardBUtton.classList.remove('visibility-hidden');
+    }
     var currentVideo = videoArray[id-1];
     videoElement.src = currentVideo.url; 
     videoTitle.innerHTML = currentVideo.title;
     videoDate.innerHTML = currentVideo.date;
+
 }
 
 
 
 //Main Video dynamic update
 function updateMainVideo(response) {
-    var videoElement = document.getElementById("video-main");
-    var videoTitle = document.getElementById("main-video-title");
-    var videoDate = document.getElementById("main-video-date");
-    var backwardButton = document.getElementById("main-video-backward-button");
+    var backwardButton = document.getElementById('main-video-backward-button');
     backwardButton.classList.add('visibility-hidden');
-    var videoArray = JSON.parse(response);
+     videoArray = JSON.parse(response);
     videoElement.src = videoArray[0].url;
     videoTitle.innerHTML = videoArray[0].title;
     videoDate.innerHTML = videoArray[0].date;
@@ -87,7 +118,7 @@ function togglePlayPause() {
        playpause.title = "pause";
        playpause.classList.remove("fa-play");
        playpause.classList.add("fa-pause");
-       controls.classList.add('visibility-hidden');
+       controls.classList.add('display-none');
        video.play();
     }
     else {

@@ -117,10 +117,14 @@
   vertical-align: top;
 }
 
-.visibility-hidden {
-   visibility: hidden;
+.display-none {
+  
+   display:none;
 }
 
+.visibility-hidden {
+  visibility: hidden;
+}
 .next {
   font-size: 12px;
   margin-top: 5px;
