@@ -51,7 +51,7 @@
 .content-top hr {
   margin: 10px 0px 0px 10px;
   width: 95%;
-  color: #8b572a;
+  background-color: #8b572a;
 }
 
 /*Video Container*/
@@ -118,9 +118,14 @@
 }
 
 .display-none {
-  
-   display:none;
+   display:none; 
+
 }
+input[type=range] {
+  display: inline-block;
+  width: auto;
+}
+
 
 .visibility-hidden {
   visibility: hidden;
