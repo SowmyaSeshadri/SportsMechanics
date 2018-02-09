@@ -1,9 +1,28 @@
 var video = document.getElementById("video-main");
 video.addEventListener("timeupdate", updateProgress, false);
+var videoElement = document.getElementById("video-main");
+var videoTitle = document.getElementById("main-video-title");
+var videoDate = document.getElementById("main-video-date");
+var videoArray;
 
 window.onload = function() {
     xmlrequest('GET',"videos",null,updateMainVideo);
 }
+
+//Control buttons
+$(document).ready(function() {
+    $(".video-container").mouseover(function() {
+       $("#video-controls").show();
+    }); 
+    $('.video-container').mouseout(function () {
+        $('#video-controls').hide();      
+  });
+});
+
+document.getElementById('outer').addEventListener("click",function(){
+    changeMainVideo();
+})
+
 
 function xmlrequest(type, url, content, callback) {
     console.log(url);
@@ -20,13 +39,22 @@ function xmlrequest(type, url, content, callback) {
     request.send(content);
 }
 
+function changeMainVideo() {
+    var subBlock = event.target;
+    var id = event.target.id.substring(event.target.id.length-1,);
+    var currentVideo = videoArray[id-1];
+    videoElement.src = currentVideo.url; 
+    videoTitle.innerHTML = currentVideo.title;
+    videoDate.innerHTML = currentVideo.date;
+}
+
+
+
 //Main Video dynamic update
 function updateMainVideo(response) {
-    var videoElement = document.getElementById("video-main");
-    var videoTitle = document.getElementById("main-video-title");
-    var videoDate = document.getElementById("main-video-date");
+ 
 
-    var videoArray = (JSON.parse(response));
+    videoArray = (JSON.parse(response));
     videoElement.src = videoArray[0].url;
     videoTitle.innerHTML = videoArray[0].title;
     videoDate.innerHTML = videoArray[0].date;
@@ -39,6 +67,7 @@ function updateMainVideo(response) {
         document.getElementById('video-date-'+(i+1)).innerHTML = videoArray[i].date;
     }
 }
+
 
 
 //Play and pause function
@@ -65,6 +94,7 @@ function togglePlayPause() {
 function setVolume() {
     var volume = document.getElementById("volume");
     video.volume = volume.value;
+    
  }
 
 //Progress bar function
@@ -77,12 +107,3 @@ function setVolume() {
     progress.style.width = value + "%";
  }
 
-//Control buttons
- $(document).ready(function() {
-    $(".video-container").mouseover(function() {
-       $("#video-controls").show();
-    }); 
-    $('.video-container').mouseout(function () {
-        $('#video-controls').hide();      
-  });
-});
