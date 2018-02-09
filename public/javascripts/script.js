@@ -1,8 +1,13 @@
 var video = document.getElementById("video-main");
+var currentVideo=1;
 video.addEventListener("timeupdate", updateProgress, false);
+
+
 
 window.onload = function() {
     xmlrequest('GET',"videos",null,updateMainVideo);
+    //Control buttons
+
 }
 
 function xmlrequest(type, url, content, callback) {
@@ -25,7 +30,8 @@ function updateMainVideo(response) {
     var videoElement = document.getElementById("video-main");
     var videoTitle = document.getElementById("main-video-title");
     var videoDate = document.getElementById("main-video-date");
-
+    var backwardButton = document.getElementById("main-video-backward-button");
+    backwardButton.classList.add('visibility-hidden');
     var videoArray = (JSON.parse(response));
     videoElement.src = videoArray[0].url;
     videoTitle.innerHTML = videoArray[0].title;
@@ -77,8 +83,8 @@ function setVolume() {
     progress.style.width = value + "%";
  }
 
-//Control buttons
- $(document).ready(function() {
+ 
+$(document).ready(function() {
     $(".video-container").mouseover(function() {
        $("#video-controls").show();
     }); 
@@ -86,3 +92,4 @@ function setVolume() {
         $('#video-controls').hide();      
   });
 });
+
